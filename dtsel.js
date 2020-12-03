@@ -61,7 +61,12 @@
             showTime: false,
             paddingX: 5,
             paddingY: 5,
-            direction: 'TOP'
+            direction: 'TOP',
+            futureDates: true,
+            pastDates: true,
+            unavailableDates: [],
+            weekend: [0, 6],
+            weekendAvailable: false
         }
 
         if (!elem) {
@@ -85,7 +90,7 @@
     }
     DTS.prototype.setup = function () {
         var handler = this.inputElemHandler.bind(this);
-        this.inputElem.addEventListener("focus", handler, false)
+        this.inputElem.addEventListener("focus", handler, false);
         this.inputElem.addEventListener("blur", handler, false);
     }
     DTS.prototype.inputElemHandler = function (e) {
@@ -390,6 +395,8 @@
             var oneDayMilliSecs = 24 * 60 * 60 * 1000;
             var start = new Date(this.year, this.month, 1);
             var adjusted = new Date(start.getTime() - oneDayMilliSecs * start.getDay());
+            var todays = new Date();
+            // todays.setHours(0,0,0);
 
             grid.children[6].style.display = "";
             for (var i = 1; i < 7; i++) {
@@ -408,6 +415,16 @@
                         cell.classList.add(month < this.month ? classes[0] : classes[1]);
                     } else if (isEqualDate(adjusted, this.value)){
                         cell.classList.add(classes[2]);
+                    }
+                    // if(isUnavailableDate(adjusted, this.settings.config) ||
+                    //     isWeekend(adjusted,this.settings.config) ||
+                    //     !isDaysSerieAvailable(adjusted, todays, this.settings.config)) {
+                    if(isNotDayAvailable(adjusted, todays, this.settings.config)) {
+                        cell.classList.add('cal-cell-unavailable');
+                        cell.onclick = null;
+                    } else {
+                        cell.classList.remove('cal-cell-unavailable');
+                        cell.onclick = this.onDateSelected.bind(this);
                     }
                     adjusted = new Date(adjusted.getTime() + oneDayMilliSecs);
                 }
@@ -874,6 +891,55 @@
         return (date1.getFullYear() == date2.getFullYear() && 
                 date1.getMonth() == date2.getMonth() && 
                 date1.getDate() == date2.getDate());
+    }
+
+    /**
+     * Checks if date is unavailable
+     * @param {Date} date  
+     * @param {DTS} settings
+     * @returns {Boolean} true or false 
+     */
+    function isUnavailableDate(date, settings) {
+        if(!date) return false;
+        return (settings.unavailableDates.filter(d => isEqualDate(parseDate(d,settings),date))).length > 0;
+    }
+
+    /**
+     * Checks whether date is weekend
+     * @param {Date} date 
+     * @param {DTS} settings 
+     * @returns {Boolean} true or false 
+     */
+    function isWeekend(date, settings) {
+        if(!date || settings.weekendAvailable) return false;
+        return (settings.weekend.filter(d => d == date.getDay())).length > 0
+    }
+
+    /**
+     * Checks whether the date belongs to the available date range
+     * @param {Date} date 
+     * @param {Date} dateRef 
+     * @param {DTS} settings 
+     * @returns {Boolean} true or false 
+     */
+    function isDaysSerieAvailable(date, dateRef, settings) {
+        return !((!settings.pastDates && 
+            date.getTime() < dateRef.getTime()) || 
+            (!settings.futureDates && 
+                date.getTime() > dateRef.getTime()));
+    }
+
+    /**
+     * Checks whether date is NOT available
+     * @param {Date} date 
+     * @param {Date} dateRef 
+     * @param {DTS} settings 
+     * @returns {Boolean} true or false 
+     */
+    function isNotDayAvailable(date, dateRef, settings) {
+        return (isUnavailableDate(date, settings) ||
+        isWeekend(date,settings) ||
+        !isDaysSerieAvailable(date, dateRef, settings));
     }
 
     /**

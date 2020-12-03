@@ -8,7 +8,8 @@ instance = new dtsel.DTS('input[name="date_field"]',  {
     direction: 'BOTTOM',
     dateFormat: "yyyy-mm-dd",
     showTime: false,
-    timeFormat: "HH:MM:SS"
+    timeFormat: "HH:MM:SS",
+
 });
 ```
 ![](https://i.imgur.com/DeYesl9.jpg)
@@ -59,9 +60,14 @@ The local state
 | dateFormat | <code>String</code> | 
 | timeFormat | <code>String</code> | 
 | showDate | <code>Boolean</code> | 
-| showTime | <code>Boolean</code> | 
+| showTime | <code>Boolean</code> |
+| futureDays | <code>Booblean</code> | 
+| pastDays | <code>Booblean</code> | 
+| unavailableDates | <code>String[]</code> | 
+| weekend | <code>int[]</code> | 
+| weekendAvailable | <code>Boolean</code> | 
+| paddingY | <code>Number</code> |  
 | paddingX | <code>Number</code> | 
-| paddingY | <code>Number</code> | 
 | defaultView | [<code>BodyType</code>](#BodyType) | 
 | direction | <code>&quot;TOP&quot;</code> \| <code>&quot;BOTTOM&quot;</code> | 
 

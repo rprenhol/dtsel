@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dtsel Date Picker</title>
+    <link rel="stylesheet" href="dtsel.css">
+    <script src="dtsel.js"></script>
+    <script>
+        window.onload = () => {
+            var dtPicker = new dtsel.DTS('#picker', {
+                    dateFormat: 'dd/mm/yyyy',
+                    showTime: false,
+                    unavailableDates: ['16/12/2020', '22/12/2020','01/01/2021'],
+                    pastDates: false,
+                    futureDates: true,
+                    weekend: [0],
+                    weekendAvailable: false
+                });
+            inputHidden.dispatchEvent(new Event('focus'));
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <input type="text" id="picker">
+    </div>
+</body>
+</html>

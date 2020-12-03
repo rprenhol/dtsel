@@ -1,10 +1,12 @@
 .date-selector-wrapper {
+    color: white;
     width: 200px;
     padding: 3px;
-    background-color: #fff;
+    background-color: rgba(0, 0, 0, 0.75);
     box-shadow: 1px 1px 10px 1px #5c5c5c;
     position: absolute;
     font-size: 12px;
+    /* font-family: sans-serif; */
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -49,16 +51,35 @@
 }
 .cal-days .cal-cell {
     flex: 0.143;
+    border-radius: 50%;
 }
+
+.cal-days .cal-day-names .cal-cell {
+    border-radius: initial;
+}
+
+.cal-days .cal-cell-unavailable {
+    cursor: default;
+    color: #777;
+}
+
+.cal-days .cal-cell:hover.cal-cell-unavailable {
+    background-color: initial;
+}
+
 .cal-value {
-    color: #fff;
-    background-color: #286090;
+    color: rgb(0, 0, 0);
+    background-color: #ffffff;
 }
 .cal-cell:hover, .cal-nav:hover {
-    background-color: #eee;
+    background-color: rgb(90, 90, 90);
 }
 .cal-value:hover {
-    background-color: #204d74;
+    background-color: #a3a3a3;
+}
+
+.cal-days .cal-day-names .cal-cell:hover {
+    background-color: initial;
 }
 
 /* time footer */
